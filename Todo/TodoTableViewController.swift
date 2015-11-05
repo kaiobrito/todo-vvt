@@ -10,6 +10,8 @@ import UIKit
 
 class TodoTableViewController: UITableViewController {
     @IBOutlet weak var addBarButton: UIBarButtonItem!
+    var datasource:[AnyObject] = []
+    let reuseIdentifier = "TodoCell";
     
     @IBAction func addTodo(sender: AnyObject) {
         let alert = UIAlertController(title: "Add Todo", message: "Type your todo", preferredStyle: .Alert)
@@ -26,5 +28,15 @@ class TodoTableViewController: UITableViewController {
         
         //Presenting alert
         self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    //MARK: Datasource
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return datasource.count;
+    }
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: .Default, reuseIdentifier: reuseIdentifier)
+        return cell;
     }
 }

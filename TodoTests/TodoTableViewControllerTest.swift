@@ -38,6 +38,26 @@ class TodoTableViewControllerTest: XCTestCase {
         XCTAssertNotNil(alertController)
 
     }
+    
+    //MARK:Datasource
+    
+    func testnumberOfRowsInSection(){
+        let tableview = self.viewController.tableView;
+        
+        XCTAssertEqual(self.viewController.tableView(tableview, numberOfRowsInSection: 0), 0)
+        let newDatasource = ["New Datasource"];
+        self.viewController.datasource = newDatasource;
+        
+        XCTAssertEqual(self.viewController.tableView(tableview, numberOfRowsInSection: 0), 1)
+        
+    }
+    
+    func testCellForRowAtIndexPath(){
+        let tableview = self.viewController.tableView;
+        let cell = self.viewController.tableView(tableview, cellForRowAtIndexPath: NSIndexPath(forItem: 0, inSection: 0))
+        
+        
+    }
 
 
 }
