@@ -42,7 +42,16 @@ class TodoTableViewController: UITableViewController,NSFetchedResultsControllerD
         });
         
         //add alert actions
-        alert.addAction(UIAlertAction(title: "Save", style: .Default, handler: nil))
+        alert.addAction(UIAlertAction(title: "Save", style: .Default, handler: {
+            action in
+            let todo = Todo(context: self.manageContext)
+            todo.value = (alert.textFields?.first?.text);
+            do{
+                try self.manageContext.save()
+            }catch{
+                print(error);
+            }
+        }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
         
         //Presenting alert
@@ -54,6 +63,15 @@ class TodoTableViewController: UITableViewController,NSFetchedResultsControllerD
     }
     func controllerWillChangeContent(controller: NSFetchedResultsController) {
         self.tableView.beginUpdates()
+    }
+    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+        switch(type){
+        case .Insert:
+            self.tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Automatic)
+            break;
+        default:
+            break;
+        }
     }
     
     //MARK: Datasource

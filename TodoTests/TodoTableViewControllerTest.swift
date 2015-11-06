@@ -27,7 +27,7 @@ class TodoTableViewControllerTest: XCTestCase {
     }
     
     func insertDummyData(){
-        let record = Todo(insertIntoManagedObjectContext: coreData.managedObjectContext)
+        let record = Todo(context: coreData.managedObjectContext)
         record.value = dummyTodo;
 
         do{

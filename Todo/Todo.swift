@@ -12,7 +12,10 @@ import CoreData
 private let entityName = "Todo";
 class Todo: NSManagedObject {
     
-    init(insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+    override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+        super.init(entity: entity, insertIntoManagedObjectContext: context)
+    }
+    init(context: NSManagedObjectContext?) {
         let entity = NSEntityDescription.entityForName(entityName, inManagedObjectContext: context!);
         super.init(entity: entity!, insertIntoManagedObjectContext: context)
     }
