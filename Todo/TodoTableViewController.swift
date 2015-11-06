@@ -22,7 +22,8 @@ class TodoTableViewController: UITableViewController,NSFetchedResultsControllerD
         
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "value", ascending: true)];
         
-        self.datasource = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: manageContext, sectionNameKeyPath: nil, cacheName: nil)
+        self.datasource = Todo.fetchedResults(manageContext);
+        self.datasource.delegate = self
         do{
             try self.datasource.performFetch();
         }catch{
@@ -62,7 +63,12 @@ class TodoTableViewController: UITableViewController,NSFetchedResultsControllerD
     
     //MARK: Delegate
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        let todo = datasource.objectAtIndexPath(indexPath);
+        
         let cell = UITableViewCell(style: .Default, reuseIdentifier: reuseIdentifier)
+        cell.accessoryType = UITableViewCellAccessoryType.Checkmark;
+        cell.textLabel?.text = todo.valueForKey("value") as? String;
         return cell;
     }
 }

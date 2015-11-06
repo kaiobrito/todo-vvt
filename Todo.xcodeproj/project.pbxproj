@@ -14,6 +14,8 @@
 		8B8D727D1BEC447100F157B5 /* TestCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8D727C1BEC447100F157B5 /* TestCoreDataStack.swift */; };
 		8B8D727F1BEC453B00F157B5 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8D727E1BEC453B00F157B5 /* CoreDataStack.swift */; };
 		8B8D72801BEC45EB00F157B5 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8D727E1BEC453B00F157B5 /* CoreDataStack.swift */; };
+		8B8D72811BEC4FA900F157B5 /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8D72771BEC415700F157B5 /* Todo.swift */; };
+		8B8D72821BEC4FAE00F157B5 /* Todo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8D72761BEC415700F157B5 /* Todo+CoreDataProperties.swift */; };
 		8BF4287A1BEAF4710008866B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF428791BEAF4710008866B /* AppDelegate.swift */; };
 		8BF4287F1BEAF4710008866B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8BF4287D1BEAF4710008866B /* Main.storyboard */; };
 		8BF428821BEAF4710008866B /* Todo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8BF428801BEAF4710008866B /* Todo.xcdatamodeld */; };
@@ -313,6 +315,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8BF4289D1BEAF4710008866B /* TodoUITests.swift in Sources */,
+				8B8D72821BEC4FAE00F157B5 /* Todo+CoreDataProperties.swift in Sources */,
+				8B8D72811BEC4FA900F157B5 /* Todo.swift in Sources */,
 				8BF428AD1BEAF7C30008866B /* TodoTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

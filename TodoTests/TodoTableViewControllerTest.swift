@@ -10,6 +10,7 @@ import XCTest
 import CoreData
 
 class TodoTableViewControllerTest: XCTestCase {
+    let dummyTodo = "Todo?";
     
     var viewController:TodoTableViewController!
     let coreData:CoreDataStack = TestCoreDataStack()
@@ -26,13 +27,11 @@ class TodoTableViewControllerTest: XCTestCase {
     }
     
     func insertDummyData(){
-        let entity = NSEntityDescription.entityForName("Todo", inManagedObjectContext: coreData.managedObjectContext);
-        
-        let record = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: coreData.managedObjectContext)
-        
-        record.setValue("Todo", forKey: "value")
+        let record = Todo(insertIntoManagedObjectContext: coreData.managedObjectContext)
+        record.value = dummyTodo;
+
         do{
-         try self.coreData.managedObjectContext.save()
+            try self.coreData.managedObjectContext.save()
         }catch{
             print(error)
             abort()
@@ -43,7 +42,7 @@ class TodoTableViewControllerTest: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-
+    
     func testAddTodoButtonHasPressed() {
         self.viewController.viewDidLoad()
         
@@ -52,9 +51,9 @@ class TodoTableViewControllerTest: XCTestCase {
         self.viewController.addTodo(self)
         
         let alertController = self.viewController.presentedViewController as! UIAlertController
-
+        
         XCTAssertNotNil(alertController)
-
+        
     }
     
     //MARK:Datasource
@@ -65,21 +64,17 @@ class TodoTableViewControllerTest: XCTestCase {
         
         XCTAssertEqual(self.viewController.tableView(tableview, numberOfRowsInSection: 0), 0)
         insertDummyData();
-        do{
-            try self.viewController.datasource.performFetch()
-        }catch{
-            XCTFail()
-        }
         XCTAssertEqual(self.viewController.tableView(tableview, numberOfRowsInSection: 0), 1)
         
     }
     
     func testCellForRowAtIndexPath(){
         let tableview = self.viewController.tableView;
+        insertDummyData();
         let cell = self.viewController.tableView(tableview, cellForRowAtIndexPath: NSIndexPath(forItem: 0, inSection: 0))
         
-        
+        XCTAssertEqual(dummyTodo, cell.textLabel?.text)                        
     }
-
-
+    
+    
 }
