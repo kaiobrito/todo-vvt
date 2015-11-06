@@ -7,10 +7,12 @@
 //
 
 import XCTest
+import CoreData
 
 class TodoTableViewControllerTest: XCTestCase {
     
     var viewController:TodoTableViewController!
+    let coreData:CoreDataStack = TestCoreDataStack()
     
     override func setUp() {
         super.setUp()
@@ -19,8 +21,22 @@ class TodoTableViewControllerTest: XCTestCase {
         let storyboard = UIStoryboard(name: "Main", bundle: NSBundle(forClass: self.dynamicType))
         
         self.viewController = storyboard.instantiateViewControllerWithIdentifier("TodoTableViewController") as! TodoTableViewController;
+        viewController.manageContext = coreData.managedObjectContext;
         UIApplication.sharedApplication().keyWindow!.rootViewController = viewController
-
+    }
+    
+    func insertDummyData(){
+        let entity = NSEntityDescription.entityForName("Todo", inManagedObjectContext: coreData.managedObjectContext);
+        
+        let record = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: coreData.managedObjectContext)
+        
+        record.setValue("Todo", forKey: "value")
+        do{
+         try self.coreData.managedObjectContext.save()
+        }catch{
+            print(error)
+            abort()
+        }
     }
     
     override func tearDown() {
@@ -29,6 +45,8 @@ class TodoTableViewControllerTest: XCTestCase {
     }
 
     func testAddTodoButtonHasPressed() {
+        self.viewController.viewDidLoad()
+        
         XCTAssertNil(self.viewController.presentedViewController)
         
         self.viewController.addTodo(self)
@@ -42,12 +60,16 @@ class TodoTableViewControllerTest: XCTestCase {
     //MARK:Datasource
     
     func testnumberOfRowsInSection(){
+        self.viewController.viewDidLoad()
         let tableview = self.viewController.tableView;
         
         XCTAssertEqual(self.viewController.tableView(tableview, numberOfRowsInSection: 0), 0)
-        let newDatasource = ["New Datasource"];
-        self.viewController.datasource = newDatasource;
-        
+        insertDummyData();
+        do{
+            try self.viewController.datasource.performFetch()
+        }catch{
+            XCTFail()
+        }
         XCTAssertEqual(self.viewController.tableView(tableview, numberOfRowsInSection: 0), 1)
         
     }

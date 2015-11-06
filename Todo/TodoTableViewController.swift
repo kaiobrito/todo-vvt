@@ -7,11 +7,29 @@
 //
 
 import UIKit
+import CoreData
 
-class TodoTableViewController: UITableViewController {
+class TodoTableViewController: UITableViewController,NSFetchedResultsControllerDelegate {
     @IBOutlet weak var addBarButton: UIBarButtonItem!
-    var datasource:[AnyObject] = []
+    var datasource:NSFetchedResultsController!;
     let reuseIdentifier = "TodoCell";
+    var manageContext:NSManagedObjectContext!;
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let fetchRequest = NSFetchRequest(entityName: "Todo")
+        
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "value", ascending: true)];
+        
+        self.datasource = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: manageContext, sectionNameKeyPath: nil, cacheName: nil)
+        do{
+            try self.datasource.performFetch();
+        }catch{
+            print(error)
+            abort()
+        }
+    }
     
     @IBAction func addTodo(sender: AnyObject) {
         let alert = UIAlertController(title: "Add Todo", message: "Type your todo", preferredStyle: .Alert)
@@ -29,12 +47,20 @@ class TodoTableViewController: UITableViewController {
         //Presenting alert
         self.presentViewController(alert, animated: true, completion: nil)
     }
+    //MARK: NSFetchedResultsControllerDelegate
+    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+        self.tableView.endUpdates()
+    }
+    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+        self.tableView.beginUpdates()
+    }
     
     //MARK: Datasource
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return datasource.count;
+        return datasource.sections![section].numberOfObjects;
     }
     
+    //MARK: Delegate
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .Default, reuseIdentifier: reuseIdentifier)
         return cell;
