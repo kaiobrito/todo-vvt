@@ -76,5 +76,13 @@ class TodoTableViewControllerTest: XCTestCase {
         XCTAssertEqual(dummyTodo, cell.textLabel?.text)                        
     }
     
+    func testRemoveRowAtIndexPath(){
+        let tableview = self.viewController.tableView;
+        insertDummyData();
+        XCTAssertEqual(self.viewController.tableView(tableview, numberOfRowsInSection: 0), 1)
+        self.viewController.tableView(tableview, commitEditingStyle: .Delete, forRowAtIndexPath: NSIndexPath(forItem: 0, inSection: 0))
+        XCTAssertEqual(self.viewController.tableView(tableview, numberOfRowsInSection: 0), 0)
+    }
+    
     
 }

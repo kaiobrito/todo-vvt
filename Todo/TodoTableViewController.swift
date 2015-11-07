@@ -69,6 +69,10 @@ class TodoTableViewController: UITableViewController,NSFetchedResultsControllerD
         case .Insert:
             self.tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Automatic)
             break;
+        case .Delete:
+            self.tableView.deleteRowsAtIndexPaths([indexPath!
+                ], withRowAnimation: .Automatic)
+            break;
         default:
             break;
         }
@@ -89,4 +93,30 @@ class TodoTableViewController: UITableViewController,NSFetchedResultsControllerD
         cell.textLabel?.text = todo.valueForKey("value") as? String;
         return cell;
     }
+    
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true;
+    }
+
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true  )
+    }
+    
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete {
+            //get object from datasource
+            let object = datasource.objectAtIndexPath(indexPath) as! NSManagedObject
+            
+            //delete the object from context
+            manageContext.deleteObject(object)
+            
+            //commit the
+            do{
+                try manageContext.save()
+            }catch{
+                print(error)
+            }
+        }
+    }
+
 }
